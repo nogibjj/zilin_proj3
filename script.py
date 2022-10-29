@@ -21,9 +21,26 @@ client = Socrata("data.cityofnewyork.us",
 
 # First 2000 results, returned as JSON from API / converted to Python list of
 # dictionaries by sodapy.
-results = client.get("ic3t-wcy2", limit=10, select="*")
+# Motor Vehicle Collisions - Crashes DB from NYC open data
+count = client.get(
+    "h9gi-nx95", 
+    select="count(collision_id)",
+    where="crash_date > '2014-10-28T00:00:00.000' AND number_of_persons_killed is not null AND number_of_persons_killed > 0",
+)
+print(count)
+print(int(count[0]['count_collision_id']) / (8 * 365))
+
+records = client.get(
+    "h9gi-nx95", 
+    limit=100,
+    select="crash_date,crash_time,latitude,longitude,number_of_persons_injured,number_of_persons_killed",
+    where="crash_date > '2014-10-13T00:00:00.000' AND number_of_persons_killed is not null",
+    order="number_of_persons_killed DESC, number_of_persons_injured DESC, crash_date DESC, crash_time DESC"
+)
 
 # Convert to pandas DataFrame
-results_df = pd.DataFrame.from_records(results)
+df = pd.DataFrame.from_records(records)
+print(df)
 
-print(results_df)
+# TODO find the relationship between crash_time and crashes
+# TODO find the relationship between latitude, longitude and crashes 
