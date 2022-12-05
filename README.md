@@ -47,6 +47,7 @@ client.get(
 
 ## How to use
 step1. make install # to install all dependencies
+
 step2. python / python3 main.py # to run the script
 
 ## Results
