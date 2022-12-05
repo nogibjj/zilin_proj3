@@ -57,7 +57,7 @@ y = df["number_of_persons_killed"]
 plt.plot(x, y, "bo")
 plt.xlabel("X")
 plt.ylabel("Y")
-plt.savefig("date_crashes.png")
+plt.savefig("results/date_crashes.png")
 plt.close()
 
 # plotting number_of_persons_killed vs. (latitude, longitude)
@@ -65,4 +65,4 @@ nx = df["latitude"]
 ny = df["longitude"]
 nc = df["number_of_persons_killed"]
 plt.scatter(nx, ny, s=10, c=nc, cmap="gray")
-plt.savefig("location_crashes.png")
+plt.savefig("results/location_crashes.png")
