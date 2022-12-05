@@ -24,8 +24,11 @@ count = client.get( # Get the number of collision after 2014-10-28 where number_
     # conditional clauses
     where="crash_date > '2014-10-28T00:00:00.000' AND number_of_persons_killed is not null AND number_of_persons_killed > 0",
 )
-print(count) # Number of collision in total
-print(int(count[0]["count_collision_id"]) / (8 * 365)) # Number of collision average per day
+print("High-level Analysis:")
+print(f"The total number of collisions from 2014-10-28 is: {count[0]['count_collision_id']}") # Number of collision in total
+avg_collision = int(count[0]["count_collision_id"]) / (8 * 365) # Number of collision average per day
+print(f"The average number of collisions from 2014-10-28 is: {avg_collision}")
+print("------------------------------------------------------------------------------")
 
 # Get the number of collision after 2014-10-28 where number_of_persons_killed is greater than 0
 # plus location constraint (to omit bad data)
@@ -40,23 +43,23 @@ records = client.get(
 
 # Convert to pandas DataFrame
 df = pd.DataFrame.from_records(records)
-print(df.head)
-print(df.dtypes)
 df["crash_date"] = pd.to_datetime(df["crash_date"])
 df["crash_time"] = pd.to_datetime(df["crash_time"], format="%H:%M")
 df["latitude"] = df["latitude"].astype(float)
 df["longitude"] = df["longitude"].astype(float)
 df["number_of_persons_injured"] = df["number_of_persons_injured"].astype(int)
 df["number_of_persons_killed"] = df["number_of_persons_killed"].astype(int)
-print(df.dtypes)
+print("DataFrame Overview: ")
+print(df.head)
 
 # find the relationship between crash_date and crashes
 x = df["crash_date"]
 y = df["number_of_persons_killed"]
 # plotting number_of_persons_killed vs. crash_date
-plt.plot(x, y, "bo")
-plt.xlabel("X")
-plt.ylabel("Y")
+plt.plot(x, y, "o")
+plt.xlabel("crash_date")
+plt.ylabel("number_of_persons_killed")
+plt.title("number_of_persons_killed vs. crash_date")
 plt.savefig("results/date_crashes.png")
 plt.close()
 
@@ -64,5 +67,9 @@ plt.close()
 nx = df["latitude"]
 ny = df["longitude"]
 nc = df["number_of_persons_killed"]
-plt.scatter(nx, ny, s=10, c=nc, cmap="gray")
+plt.scatter(nx, ny, s=10, c=nc)
+plt.xlabel("latitude")
+plt.ylabel("longitude")
+plt.title("number_of_persons_killed vs. (latitude, longitude)")
 plt.savefig("results/location_crashes.png")
+plt.close()

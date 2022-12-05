@@ -52,3 +52,12 @@ step2. python / python3 main.py # to run the script
 
 ## Results
 The generated images are stored in the root directory and are stored in png format. People may use it as a reference to get information about car accident or collision happened in New York City.
+
+Examples:
+- Relationship between crash date and crashes
+
+![Diagram](./results/date_crashes.png)
+
+- Relationship between location (latitude, longitude) and crashes
+
+![Diagram](./results/location_crashes.png)
